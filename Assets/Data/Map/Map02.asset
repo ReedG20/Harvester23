@@ -1,0 +1,80 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5b3977e60c098f4581adb55b55741d9, type: 3}
+  m_Name: Map02
+  m_EditorClassIdentifier: 
+  size: 100
+  useCustomSeed: 0
+  customSeed: 0
+  biomeNoiseScale: 0.1
+  biomes:
+  - name: Forest
+    noiseSeed: 0
+    sizePriority: 0
+    biomeElements:
+    - gamObj: {fileID: 11400000, guid: 2de4e252419350d489582a89d304e8a1, type: 2}
+      layer: 1
+      noiseScale: 0
+      noiseSeed: 0
+      randomSeed: 0
+      noiseCutoff: 1
+      randomCutoff: 1
+    - gamObj: {fileID: 11400000, guid: 7b85593edf0f7254787730bb7ba96baf, type: 2}
+      layer: 0
+      noiseScale: 0.1
+      noiseSeed: 3
+      randomSeed: 0
+      noiseCutoff: 0.5
+      randomCutoff: 1
+    - gamObj: {fileID: 11400000, guid: c7d1f9bbb31a93a488dabbb4ddb56ecb, type: 2}
+      layer: 0
+      noiseScale: 0.1
+      noiseSeed: 3
+      randomSeed: 0
+      noiseCutoff: 0.5
+      randomCutoff: 0.5
+    - gamObj: {fileID: 11400000, guid: 95aa2cf1b2e8ce24bb1f934050f4595e, type: 2}
+      layer: 0
+      noiseScale: 0.1
+      noiseSeed: 6
+      randomSeed: 0
+      noiseCutoff: 0.352
+      randomCutoff: 1
+  - name: Desert
+    noiseSeed: 1
+    sizePriority: 0
+    biomeElements:
+    - gamObj: {fileID: 11400000, guid: a5b3dd6a3bcf2704383fa58ea5e3bea7, type: 2}
+      layer: 1
+      noiseScale: 0
+      noiseSeed: 0
+      randomSeed: 0
+      noiseCutoff: 1
+      randomCutoff: 1
+    - gamObj: {fileID: 11400000, guid: 960ed75349c902e4eb311c0061726b20, type: 2}
+      layer: 0
+      noiseScale: 0
+      noiseSeed: 0
+      randomSeed: 0
+      noiseCutoff: 1
+      randomCutoff: 0.086
+  - name: Ocean
+    noiseSeed: 2
+    sizePriority: 0
+    biomeElements:
+    - gamObj: {fileID: 11400000, guid: bd825f2bf4ed45e4ba2b028339c33cf6, type: 2}
+      layer: 1
+      noiseScale: 0
+      noiseSeed: 0
+      randomSeed: 0
+      noiseCutoff: 1
+      randomCutoff: 1
