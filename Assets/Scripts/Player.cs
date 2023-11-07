@@ -10,7 +10,7 @@ public class Player {
     List<Slot> inventory;
 
     // Should inventorySize not be here?
-    public readonly Vector2Int inventorySize = new Vector2Int(9, 6); // Inventory position bounds (8 x 6 and the 8-slot hotbar)
+    public readonly Vector2Int inventorySize = new Vector2Int(8, 5); // Inventory position bounds (8 x 6 and the 8-slot hotbar)
 
     // Player constructor
     public Player(string name, GameObject playerObject) {
@@ -40,20 +40,20 @@ public class Player {
     // Setup new empty inventory
     [SerializeField]
     public void CreateInventory() {
-        for (int y = 0; y < inventorySize.y; y++) {
-            for (int x = 0; x < inventorySize.x; x++) {
-                inventory.Add(new Slot(null, 0, new Vector2Int(x, y)));
+        for (int y = inventorySize.y; y > 0; y--) { // Changed from y++ to y-- because I feel like thats what it should be?
+            for (int x = 1; x <= inventorySize.x; x++) {
+                inventory.Add(new Slot(null, 0, new Vector2Int(x + 1, y)));
             }
         }
     }
 
     // Add item to inventory
-    public void AddToInventory(Item item, int amount, bool includesPosition, Vector2Int position) {
+    public void AddToInventory(Item item, int amount, bool includesPosition, Vector2Int position) { // This function needs to be changed. We cannot add new inventory slots at all
         if (amount > 0) { // If the amount is greater than zero...
             if (inventory.Exists(x => x.item == item)) { // If the item already exists in the inventory...
                 inventory.Find(x => x.item == item).amount += amount; // ...add it to that inventory slot
             } else {
-                inventory.Add(new Slot(item, amount, new Vector2Int(1, 1))); // Need to fix position
+                inventory.Add(new Slot(item, amount, new Vector2Int(1, 1))); // This needs to be changed. 
             }
         } else {
             Debug.LogError("invalid amount of items to add!");
@@ -71,7 +71,7 @@ public class Player {
                 for (int x = 0; x < inventorySize.x; x++) { // x
 
                     foreach (Slot slot in result) {
-                        if (slot.position.x == x + 1 && slot.position.y == y + 1) { // + 1 because for statements begin at 0, but our grid's coordinates start at 1
+                        if (slot.position.x == x + 1 && slot.position.y == y) { // + 1 because for statements begin at 0, but our grid's coordinates start at 1
 
                             if (slot.amount >= itemsLeftToRemove) { // If there are enough items in the slot
 

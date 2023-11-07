@@ -8,7 +8,7 @@ public class GameManager : MonoBehaviour
     //int playerAmount = 1;
 
     //[SerializeField]
-    //GameObject playerPrefab;
+    // GameObject playerPrefab;
 
     [SerializeField]
     GameObject tempPlayer;

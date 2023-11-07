@@ -19,7 +19,7 @@ public class Playtest : MonoBehaviour
 
     void Update() {
         int amount = gameManager.GetPlayer(0).GetItemAmount(testItem);
-        Debug.Log(amount);
+        //Debug.Log(amount);
     }
 
     void OnEnable() {

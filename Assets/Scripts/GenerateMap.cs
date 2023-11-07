@@ -5,6 +5,8 @@ using UnityEngine;
 public class GenerateMap : MonoBehaviour
 {
     [SerializeField]
+    bool generateMap;
+    [SerializeField]
     Map map; // Map stores the instructions on how to create a world
     World world; // World stores the data created by the map
 
@@ -13,29 +15,32 @@ public class GenerateMap : MonoBehaviour
     Quaternion objectRotation = Quaternion.Euler(new Vector3(-90f, 0f, 0f)); // Will remove soon
 
     void Start() {
-        world = new World();
 
-        // Setting seed of world
-        if (map.useCustomSeed)
-            world.seed = map.customSeed;
-        else
-            world.seed = Random.Range(-1f, 1f);
+        if (generateMap) {
+            world = new World();
 
-        for (int x = 0; x < map.size; x++)
-        {
-            for (int y = 0; y < map.size; y++)
+            // Setting seed of world
+            if (map.useCustomSeed)
+                world.seed = map.customSeed;
+            else
+                world.seed = Random.Range(-1f, 1f);
+
+            for (int x = 0; x < map.size; x++)
             {
-                Biome activeBiome = FindBiome(new Vector2(x, y));
+                for (int y = 0; y < map.size; y++)
+                {
+                    Biome activeBiome = FindBiome(new Vector2(x, y));
 
-                Tile activeTile = FindTileInBiome(new Vector2(x, y), activeBiome);
+                    Tile activeTile = FindTileInBiome(new Vector2(x, y), activeBiome);
 
-                world.AddTile(new Vector2(x, y), activeTile);
+                    world.AddTile(new Vector2(x, y), activeTile);
+                }
             }
+
+            Random.InitState((int)System.DateTime.Now.Ticks); // REMOVE LATER
+
+            CreateWorld(world, map.size); // Physically create the world (instantiate the tiles)
         }
-
-        Random.InitState((int)System.DateTime.Now.Ticks); // REMOVE LATER
-
-        CreateWorld(world, map.size); // Physically create the world (instantiate the tiles)
     }
 
     Biome FindBiome(Vector2 position) {
