@@ -10,7 +10,7 @@ public class Player {
     List<Slot> inventory;
 
     // Should inventorySize not be here?
-    public readonly Vector2Int inventorySize = new Vector2Int(8, 5); // Inventory position bounds (8 x 6 and the 8-slot hotbar)
+    public readonly Vector2Int inventorySize = new Vector2Int(8, 5); // Inventory position bounds (8 x 4 and the 8-slot hotbar)
 
     // Player constructor
     public Player(string name, GameObject playerObject) {
@@ -40,9 +40,11 @@ public class Player {
     // Setup new empty inventory
     [SerializeField]
     public void CreateInventory() {
-        for (int y = inventorySize.y; y > 0; y--) { // Changed from y++ to y-- because I feel like thats what it should be?
+        Debug.Log("Creating inventory!!");
+        for (int y = inventorySize.y; y > 0; y--) { 
             for (int x = 1; x <= inventorySize.x; x++) {
-                inventory.Add(new Slot(null, 0, new Vector2Int(x + 1, y)));
+                Debug.Log(x + ", " + y);
+                inventory.Add(new Slot(null, 0, new Vector2Int(x, y))); 
             }
         }
     }
@@ -161,5 +163,9 @@ public class Slot {
         this.item = item;
         this.amount = amount;
         this.position = position;
+    }
+
+    public void setSlotUI(SlotUI slotUI) {
+        this.slotUI = slotUI;
     }
 }

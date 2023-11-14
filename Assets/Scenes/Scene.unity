@@ -2849,7 +2849,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54af018d9964f824ba3e5fb1269894bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  generateMap: 1
+  generateMap: 0
   map: {fileID: 0}
 --- !u!1001 &909178492
 PrefabInstance:

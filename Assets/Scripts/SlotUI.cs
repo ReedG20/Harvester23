@@ -14,11 +14,11 @@ public class SlotUI : MonoBehaviour
 
     void Awake() {
         image = GetComponentInChildren<Image>(); // Only works because there is only one image component in all of the children of InventorySlot
-        text = GetComponentInChildren<TextMeshPro>(); // Same as above
+        text = GetComponentInChildren<TextMeshPro>(); // Only works because there is only one TMP component in all of the children of InventorySlot
     }
 
     public void SetSlot (Slot slot) {
-        this.slot = slot; // "this" is used to specify which "slot" to use. Only really used at the start of the game
+        this.slot = slot;
     }
 
     public Slot GetSlot () {

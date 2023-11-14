@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Numerics;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,37 +12,36 @@ public class InventoryUI : MonoBehaviour
     public void SetupInventory (Player player) {
 
         slotUI = GetComponentsInChildren<SlotUI>(); // Get the array of all the SlotUI components in the slot gameobjects
-
-        // x and y should be accurate, so that should be accounted for in the for loops
         for (int y = player.inventorySize.y; y > 0; y--) // Top to bottom
         {
             for (int x = 1; x <= player.inventorySize.x; x++) // Left to right
             {
-                
-                Vector2Int currentPosition = new Vector2Int(x, y); // The coordinates we are currently on
+                // (1, 5), (2, 5)... (7, 1), (8, 1)
 
-                foreach (var slotUI in slotUI) // Loop for every SlotUI component in the array
+                SetupInventoryExtension(new Vector2Int(x, y), player);
+            }
+        }
+
+        // UpdateInventoryUI(); ?
+    }
+    void SetupInventoryExtension (Vector2Int currentPosition, Player player) { // Function because I need the break functionality to exit the nested loops
+        foreach (var slotUI in slotUI) // Loop for every SlotUI component in the array 
+        {
+            if (slotUI.GetSlot() == null) { // If theres no Slot in the SlotUI component...
+                foreach (var slot in player.Inventory()) // Loop for every Slot in the inventory
                 {
-                    if (slotUI.GetSlot() == null) { // If theres no Slot in the SlotUI component...
-                        foreach (var slot in player.Inventory()) // Loop for every Slot in the inventory
-                        {
-                            if (slot.position == currentPosition) { // If the position of that Slot in the inventory matches the position we are at...
-                            
-                                slotUI.SetSlot(slot); // Set the Slot in the SlotUI to that Slot
-                                slot.slotUI = slotUI; // And set the Slot's reference to the SlotUI to that SlotUI
-                                // To summarize, this function goes through each tile in the grid of the inventory, and finds the next SlotUI component with no Slot attached to it. Assuming that the order of SlotUIs is correct, the Slot matching the position that we are currently at is matched up with that SlotUI component. The Slot has a reference to the SlotUI and the SlotUI has a reference to the Slot
+                    if (slot.position == currentPosition) {                    
+                        slotUI.SetSlot(slot); 
+                        slot.setSlotUI(slotUI); 
 
-                                //UpdateInventoryUI(); maybe?
+                        //UpdateInventoryUI(); ?
 
-                                Debug.Log("Assigned slot UI to slot at position: " + currentPosition); // Is this the right place to put this?
-                            }
-                        }
+                        // Debug.Log("Assigned slot UI to slot at position: " + currentPosition);
+                        return;
                     }
                 }
             }
         }
-
-        //UpdateInventoryUI(player);
     }
 
     public void UpdateInventoryUI (Player player) {
