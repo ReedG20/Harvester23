@@ -1,8 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEditor.Rendering;
 using UnityEngine;
+using UnityEngine.TextCore.Text;
 using UnityEngine.UI;
 
 public class SlotUI : MonoBehaviour
@@ -10,11 +12,12 @@ public class SlotUI : MonoBehaviour
     Slot slot; // Keeps track of the item, amount, and position
 
     Image image;
-    TextMeshPro text;
+    TextMeshProUGUI text;
 
     void Awake() {
         image = GetComponentInChildren<Image>(); // Only works because there is only one image component in all of the children of InventorySlot
-        text = GetComponentInChildren<TextMeshPro>(); // Only works because there is only one TMP component in all of the children of InventorySlot
+        text = GetComponentInChildren<TextMeshProUGUI>(); // Only works because there is only one TMP component in all of the children of InventorySlot
+        Debug.Log(text.text);
     }
 
     public void SetSlot (Slot slot) {
@@ -31,12 +34,12 @@ public class SlotUI : MonoBehaviour
     }
 
     public void DisableIcon () {
-        image.sprite = null;
         image.enabled = false;
+        image.sprite = null;
     }
 
     public void SetAmount (int amount) {
-        text.text = amount.ToString();
+        text.text = amount.ToString(); // Error showing up here: text is not set to instance of an object
     }
 
     public void ClearAmount () {

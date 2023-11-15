@@ -157,7 +157,7 @@ public class Slot {
     public int amount;
     public Vector2Int position;
 
-    public SlotUI slotUI;
+    SlotUI slotUI; // Then this must be null somehow, meaning it was set as null to begin with
 
     public Slot(Item item, int amount, Vector2Int position) {
         this.item = item;
@@ -165,7 +165,11 @@ public class Slot {
         this.position = position;
     }
 
-    public void setSlotUI(SlotUI slotUI) {
+    public void SetSlotUI(SlotUI slotUI) {
         this.slotUI = slotUI;
+    }
+
+    public SlotUI GetSlotUI() {
+        return slotUI; // This is returing null
     }
 }
