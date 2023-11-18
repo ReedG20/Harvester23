@@ -33,7 +33,6 @@ public class InventoryUI : MonoBehaviour
                     if (slot.position == currentPosition) {       
                         // Now we have found the corresponding Slot and SlotUI
                         // and we want to give them pointers to each other
-                        Debug.Log("`Calling SetSlot with "+s+" and " + slot);
                         s.SetSlot(slot);
                         slot.SetSlotUI(s); // This still does not work for some reason
 
