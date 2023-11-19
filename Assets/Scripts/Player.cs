@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Xml.Serialization;
 using UnityEngine;
 
 public class Player {
@@ -7,169 +9,174 @@ public class Player {
 
     GameObject playerObject;
 
-    List<Slot> inventory;
+    public Slot[,] inventory;
 
-    // Should inventorySize not be here?
+    // Should inventorySize not be here? YES
     public readonly Vector2Int inventorySize = new Vector2Int(8, 5); // Inventory position bounds (8 x 4 and the 8-slot hotbar)
 
     // Player constructor
     public Player(string name, GameObject playerObject) {
         this.name = name;
         this.playerObject = playerObject;
-        
-        inventory = new List<Slot>();
+
         CreateInventory();
     }
 
-
-    // Player Object //
-
-    // Set the player object
-    public void SetPlayerObject(GameObject playerObject) {
-        this.playerObject = playerObject;
-    }
-
-    // Get the player object
-    public GameObject PlayerObject() {
-        return this.playerObject;
-    }
-
-
     // Inventory //
 
-    // Setup new empty inventory
-    [SerializeField]
+    // Setup a new empty inventory
     public void CreateInventory() {
-        Debug.Log("Creating inventory!!");
-        for (int y = inventorySize.y; y > 0; y--) { 
-            for (int x = 1; x <= inventorySize.x; x++) {
-                Debug.Log(x + ", " + y);
-                inventory.Add(new Slot(null, 0, new Vector2Int(x, y))); 
+        inventory = new Slot[inventorySize.x, inventorySize.y];
+
+        for (int y = 0; y < inventorySize.y; y++)
+        {
+            for (int x = 0; x < inventorySize.x; x++)
+            {
+                inventory[x, y] = new Slot(null, 0);
             }
         }
     }
 
     // Add item to inventory
-    public void AddToInventory(Item item, int amount, bool includesPosition, Vector2Int position) { // This function needs to be changed. We cannot add new inventory slots at all
-        if (amount > 0) { // If the amount is greater than zero...
-            if (inventory.Exists(x => x.item == item)) { // If the item already exists in the inventory...
-                inventory.Find(x => x.item == item).amount += amount; // ...add it to that inventory slot
-            } else {
-                inventory.Add(new Slot(item, amount, new Vector2Int(1, 1))); // This needs to be changed. 
-            }
-        } else {
-            Debug.LogError("invalid amount of items to add!");
+    public void AddToInventory(Item item, int amount, Vector2Int? position) {
+        Debug.Log("Adding " + amount + " " + item.name + " to inventory");
+        if (amount == 0 || item == null) {
+            Debug.LogError("Invalid item or amount!");
+            return;
         }
+
+        if (position == null) {
+            Vector2Int? tempPosition = FindAvailablePosition(item);
+
+            Debug.Log("tempPosition: " + tempPosition);
+
+            if (tempPosition == null) { 
+                Debug.Log("No available position");
+                return;
+            }
+            position = (Vector2Int)tempPosition;
+        }
+
+        // We now have a position
+
+        Slot slot = inventory[((Vector2Int)position).x, ((Vector2Int)position).y];
+
+        if (slot.item == null) {
+            slot.item = item;
+            slot.amount = amount;
+        } else if (slot.item == item) {
+            slot.amount += amount;
+        } else {
+            Debug.LogError("Item at position is not the same as the item we are trying to add!");
+            // Move it over to the next available position
+            return;
+        }
+
+        UpdateInventoryUI();
     }
 
-    // Remove item from inventory at a position
-    public void RemoveItemFromInventory(Item item, int amount) { // Need to figure out if it is necessary to know if the amount is too much here or before here. Probably before here
-        if (GetItemAmount(item) >= amount && amount > 0) {
-            List<Slot> result = inventory.FindAll(slot => slot.item == item);
+    // Find an available position in the inventory for an item
+    private Vector2Int? FindAvailablePosition(Item item)
+    {
+        Vector2Int? firstEmptySlot = null;
+        for (int y = 0; y < inventorySize.y; y++)
+        {
+            for (int x = 0; x < inventorySize.x; x++)
+            {
+                if (inventory[x, y].item == item) {
+                    return new Vector2Int(x, y);
+                }
+                if (inventory[x, y].item == null && firstEmptySlot == null) {
+                    firstEmptySlot = new Vector2Int(x, y);
+                }
+            }
+        }
+        return firstEmptySlot;
+    }
 
-            int itemsLeftToRemove = amount;
-
-            for (int y = inventorySize.y; y > 0; y--) { // y (should work backwards)
-                for (int x = 0; x < inventorySize.x; x++) { // x
-
-                    foreach (Slot slot in result) {
-                        if (slot.position.x == x + 1 && slot.position.y == y) { // + 1 because for statements begin at 0, but our grid's coordinates start at 1
-
-                            if (slot.amount >= itemsLeftToRemove) { // If there are enough items in the slot
-
-                                slot.amount -= itemsLeftToRemove; // Remove items from the slot
-                                itemsLeftToRemove -= itemsLeftToRemove; // No more items to remove
-
-                            } else if (slot.amount < itemsLeftToRemove) { // If there are not enough items in the slot to be removed
-
-                                itemsLeftToRemove -= slot.amount; // Reduce itemsLeftToRemove
-                                slot.amount -= slot.amount; // Remove all the items in that slot
-
-                            }
-                            UpdateInventory();
-                        }
-
-                        if (itemsLeftToRemove == 0) { // If there are no more items to be removed from the inventory...
-                            break; // Foreach loop is ended
-                        }
+    // Remove item from inventory
+    public void RemoveItemFromInventory(Item item, int amount) { 
+        for (int y = 0; y < inventorySize.y; y++)
+        {
+            for (int x = 0; x < inventorySize.x; x++)
+            {
+                if (item = inventory[x, y].item) {
+                    if (amount <= inventory[x, y].amount) {
+                        inventory[x, y].amount -= amount;
+                        return;
+                    } else {
+                        amount -= inventory[x, y].amount;
+                        inventory[x, y].amount = 0;
                     }
                 }
             }
-
-        } else {
-            Debug.LogError("invalid amount of items to remove!");
         }
+
+        UpdateInventoryUI();
     }
 
-    // Remove the item at a position in the inventory
-    public void RemovePositionFromInventory(Vector2Int position, int amount) { // If the amount is like half or something, get the amount of items in the slot, do the calculation elswhere, and then put that as the amount. Also, to use this function, you need to know the amount already in the slot
-        foreach (Slot slot in inventory) {
-            if (slot.position == position) {
-                slot.amount -= amount;
-            }
+    // Remove the item from the inventory at a position
+    public void RemoveItemFromPosition(Vector2Int position, int amount) {
+        if (amount == 0) {
+            Debug.LogError("Invalid amount!");
+            return;
         }
-    }
 
+        Slot slot = inventory[position.x, position.y];
 
-    // Get the inventory list
-    public List<Slot> Inventory() { // Maybe add AsReadOnly? Or honestly maybe this function shouldn't exist, I should just have getter and setter functions, and maybe inventory should be a class, and then player could have an inventory. That would make more sense
-        return this.inventory;
+        if (slot.item == null) {
+            Debug.LogError("No item at position!");
+            return;
+        }
+
+        if (amount > slot.amount) {
+            Debug.LogError("Amount is greater than amount in slot!");
+            return;
+        }
+
+        slot.amount -= amount;
+
+        UpdateInventoryUI();
     }
 
     // Get the total amount of a certain item in the inventory
     public int GetItemAmount(Item item) {
-        List<Slot> result = inventory.FindAll(slot => slot.item == item); // Equals operation should work fine
+        int totalAmount = 0;
 
-        int sum = 0;
-        foreach (var slot in result) { // Add up all the amounts
-            sum += slot.amount;
-        }
-
-        return sum;
-    }
-
-    public Slot GetSlotAtPosition(Vector2Int position) {
-        foreach (var slot in inventory)
-        {
-            if (slot.position == position) {
-                return slot;
+        foreach (Slot slot in inventory) {
+            if (slot.item == item) {
+                totalAmount += slot.amount;
             }
         }
-        return null; // Necessary so that all paths return a value
+
+        return totalAmount;
     }
 
-    void UpdateInventory() {
-        foreach (Slot slot in inventory) {
+    public void UpdateInventoryUI() {
+        foreach(Slot slot in inventory) {
+            SlotUI slotUI = slot.slotUI;
+
             if (slot.amount == 0) {
-                slot.item = null;
-            } else if (slot.amount < 0) {
-                Debug.LogError("can't have a negative amount! Negative amount of " + slot.item.Name() + " at " + slot.position);
-                slot.item = null;
-                slot.amount = 0;
-            } // Otherwise nothing else needs to happen
+                slotUI.SetAmount(0); 
+                slotUI.DisableIcon();
+            } else if (slot.amount > 0) {
+                slotUI.SetAmount(slot.amount);
+                slotUI.SetIcon(slot.item.getIcon());
+            } else { // Amount is less than zero
+                Debug.LogError("Amount is less than zero");
+            }
         }
     }
 }
 
-
 public class Slot {
     public Item item;
     public int amount;
-    public Vector2Int position;
 
-    SlotUI slotUI; // Then this must be null somehow, meaning it was set as null to begin with
+    public SlotUI slotUI;
 
-    public Slot(Item item, int amount, Vector2Int position) {
+    public Slot(Item item, int amount) {
         this.item = item;
         this.amount = amount;
-        this.position = position;
-    }
-
-    public void SetSlotUI(SlotUI slotUI) {
-        this.slotUI = slotUI;
-    }
-
-    public SlotUI GetSlotUI() {
-        return slotUI; // This is returing null
     }
 }

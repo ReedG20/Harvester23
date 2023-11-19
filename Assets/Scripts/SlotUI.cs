@@ -17,7 +17,6 @@ public class SlotUI : MonoBehaviour
     void Awake() {
         image = GetComponentInChildren<Image>(); // Only works because there is only one image component in all of the children of InventorySlot
         text = GetComponentInChildren<TextMeshProUGUI>(); // Only works because there is only one TMP component in all of the children of InventorySlot
-        Debug.Log(text.text);
     }
 
     public void SetSlot (Slot slot) {
@@ -39,7 +38,7 @@ public class SlotUI : MonoBehaviour
     }
 
     public void SetAmount (int amount) {
-        text.text = amount.ToString(); // Error showing up here: text is not set to instance of an object
+        text.text = amount.ToString();
     }
 
     public void ClearAmount () {

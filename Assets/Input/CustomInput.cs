@@ -155,9 +155,18 @@ public partial class @CustomInput: IInputActionCollection2, IDisposable
             ""id"": ""9048f614-1f01-4fc7-8a19-e829e75269a5"",
             ""actions"": [
                 {
-                    ""name"": ""AddItem"",
+                    ""name"": ""AddItem1"",
                     ""type"": ""Button"",
                     ""id"": ""3f1551a0-0f1b-4d94-9d9f-fff3f8a2f089"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""AddItem2"",
+                    ""type"": ""Button"",
+                    ""id"": ""f5b052b6-10cb-499e-a3e7-884b375221f6"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -172,7 +181,18 @@ public partial class @CustomInput: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""AddItem"",
+                    ""action"": ""AddItem1"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8333793e-ac7c-437e-b60b-ba87cbd418c6"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""AddItem2"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -186,7 +206,8 @@ public partial class @CustomInput: IInputActionCollection2, IDisposable
         m_Player_Movement = m_Player.FindAction("Movement", throwIfNotFound: true);
         // Playtest
         m_Playtest = asset.FindActionMap("Playtest", throwIfNotFound: true);
-        m_Playtest_AddItem = m_Playtest.FindAction("AddItem", throwIfNotFound: true);
+        m_Playtest_AddItem1 = m_Playtest.FindAction("AddItem1", throwIfNotFound: true);
+        m_Playtest_AddItem2 = m_Playtest.FindAction("AddItem2", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -294,12 +315,14 @@ public partial class @CustomInput: IInputActionCollection2, IDisposable
     // Playtest
     private readonly InputActionMap m_Playtest;
     private List<IPlaytestActions> m_PlaytestActionsCallbackInterfaces = new List<IPlaytestActions>();
-    private readonly InputAction m_Playtest_AddItem;
+    private readonly InputAction m_Playtest_AddItem1;
+    private readonly InputAction m_Playtest_AddItem2;
     public struct PlaytestActions
     {
         private @CustomInput m_Wrapper;
         public PlaytestActions(@CustomInput wrapper) { m_Wrapper = wrapper; }
-        public InputAction @AddItem => m_Wrapper.m_Playtest_AddItem;
+        public InputAction @AddItem1 => m_Wrapper.m_Playtest_AddItem1;
+        public InputAction @AddItem2 => m_Wrapper.m_Playtest_AddItem2;
         public InputActionMap Get() { return m_Wrapper.m_Playtest; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -309,16 +332,22 @@ public partial class @CustomInput: IInputActionCollection2, IDisposable
         {
             if (instance == null || m_Wrapper.m_PlaytestActionsCallbackInterfaces.Contains(instance)) return;
             m_Wrapper.m_PlaytestActionsCallbackInterfaces.Add(instance);
-            @AddItem.started += instance.OnAddItem;
-            @AddItem.performed += instance.OnAddItem;
-            @AddItem.canceled += instance.OnAddItem;
+            @AddItem1.started += instance.OnAddItem1;
+            @AddItem1.performed += instance.OnAddItem1;
+            @AddItem1.canceled += instance.OnAddItem1;
+            @AddItem2.started += instance.OnAddItem2;
+            @AddItem2.performed += instance.OnAddItem2;
+            @AddItem2.canceled += instance.OnAddItem2;
         }
 
         private void UnregisterCallbacks(IPlaytestActions instance)
         {
-            @AddItem.started -= instance.OnAddItem;
-            @AddItem.performed -= instance.OnAddItem;
-            @AddItem.canceled -= instance.OnAddItem;
+            @AddItem1.started -= instance.OnAddItem1;
+            @AddItem1.performed -= instance.OnAddItem1;
+            @AddItem1.canceled -= instance.OnAddItem1;
+            @AddItem2.started -= instance.OnAddItem2;
+            @AddItem2.performed -= instance.OnAddItem2;
+            @AddItem2.canceled -= instance.OnAddItem2;
         }
 
         public void RemoveCallbacks(IPlaytestActions instance)
@@ -342,6 +371,7 @@ public partial class @CustomInput: IInputActionCollection2, IDisposable
     }
     public interface IPlaytestActions
     {
-        void OnAddItem(InputAction.CallbackContext context);
+        void OnAddItem1(InputAction.CallbackContext context);
+        void OnAddItem2(InputAction.CallbackContext context);
     }
 }

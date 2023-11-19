@@ -133,9 +133,18 @@
             "id": "9048f614-1f01-4fc7-8a19-e829e75269a5",
             "actions": [
                 {
-                    "name": "AddItem",
+                    "name": "AddItem1",
                     "type": "Button",
                     "id": "3f1551a0-0f1b-4d94-9d9f-fff3f8a2f089",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "AddItem2",
+                    "type": "Button",
+                    "id": "f5b052b6-10cb-499e-a3e7-884b375221f6",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -150,7 +159,18 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "AddItem",
+                    "action": "AddItem1",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "8333793e-ac7c-437e-b60b-ba87cbd418c6",
+                    "path": "<Keyboard>/r",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "AddItem2",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -8,7 +9,9 @@ public class Playtest : MonoBehaviour
     private CustomInput input = null;
 
     [SerializeField]
-    Item testItem;
+    Item testItem1;
+    [SerializeField]
+    Item testItem2;
 
     [SerializeField]
     GameManager gameManager;
@@ -17,24 +20,21 @@ public class Playtest : MonoBehaviour
         input = new CustomInput();
     }
 
-    void Update() {
-        int amount = gameManager.GetPlayer(0).GetItemAmount(testItem);
-        //Debug.Log(amount);
-    }
-
     void OnEnable() {
         input.Enable();
-        input.Playtest.AddItem.performed += ctx => AddItem(); // E on the keyboard
+        input.Playtest.AddItem1.performed += ctx => AddItem(testItem1); // E on the keyboard
+        input.Playtest.AddItem2.performed += ctx => AddItem(testItem2); // E on the keyboard
     }
 
     void OnDisable() {
         input.Disable();
-        input.Playtest.AddItem.performed -= ctx => AddItem(); // I don't know if this will work
+        input.Playtest.AddItem1.performed -= ctx => AddItem(testItem1);
+        input.Playtest.AddItem2.performed -= ctx => AddItem(testItem2);
     }
 
-    void AddItem () {
-        gameManager.GetPlayer(0).AddToInventory(testItem, 1, false, Vector2Int.zero);
+    void AddItem (Item item) {
+        gameManager.GetPlayer(0).AddToInventory(item, 1, null);
 
-        gameManager.inventoryUI.UpdateInventoryUI(gameManager.GetPlayer(0));
+        gameManager.GetPlayer(0).UpdateInventoryUI();
     }
 }

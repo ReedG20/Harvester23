@@ -17,15 +17,6 @@ public class Item : ScriptableObject
     [SerializeField]
     Sprite icon; // Temporary. Icon will later be replaced with the rendered model
 
-
-    // Name of item
-    public string Name() {
-        if (itemType == ItemType.empty && name != null)
-            return name;
-        else
-            return itemType.ToString();
-    }
-
     public Sprite getIcon() {
         return icon;
     }
