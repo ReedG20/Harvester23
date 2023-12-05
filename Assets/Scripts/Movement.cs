@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -23,6 +24,8 @@ public class Movement : MonoBehaviour
     private float speed = 1f;
     [SerializeField]
     private float acceleration = 1f;
+
+    public Vector2 direction = Vector2.zero;
 
     private void Awake() {
         input = new CustomInput();
@@ -56,6 +59,10 @@ public class Movement : MonoBehaviour
 
     private void OnMovementPerformed(InputAction.CallbackContext value) {
         moveVector = value.ReadValue<Vector2>();
+
+        if (Math.Abs(moveVector.x) == 1f || Math.Abs(moveVector.y) == 1f) {
+            direction.Set(moveVector.x, moveVector.y);
+        }
     }
 
     private void OnMovementCancelled(InputAction.CallbackContext value) {
