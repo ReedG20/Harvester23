@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+//using System.Numerics;
 using UnityEngine;
 
 public class GenerateMap : MonoBehaviour
@@ -12,7 +13,14 @@ public class GenerateMap : MonoBehaviour
 
     float bigNum = 12345.12345f; // decimal because of perlin noise bug
 
-    Quaternion objectRotation = Quaternion.Euler(new Vector3(-90f, 0f, 0f)); // Will remove soon
+    // Collider sizes (maybe should move to GameManager or somewhere else)
+    Vector3 aboveGroundColliderCenter = new Vector3(0f, 0f, 1f); // Weird because of blender rotation
+    Vector3 aboveGroundColliderSize = new Vector3(2f, 2f, 2f);
+
+    [SerializeField]
+    PhysicMaterial slipperyPhysicMaterial;
+
+    Quaternion objectRotation = Quaternion.Euler(new Vector3(-90f, 0f, 0f)); // Will remove soon. Wait how
 
     void Start() {
 
@@ -56,13 +64,13 @@ public class GenerateMap : MonoBehaviour
         return map.biomes[highestIndex];
     }
 
-    Tile FindTileInBiome(Vector2 position, Biome activeBiome) {
+    Tile FindTileInBiome(Vector2 position, Biome activeBiome) { // I changed this to System.Numerics.Vector2 from just Vector2
         Tile tile = new Tile(null, null);
         for (int i = 0; i < activeBiome.biomeElements.Count; i++) // Each biome element
         {
             BiomeElement activeBiomeElement = activeBiome.biomeElements[i];
 
-            if (activeBiome.biomeElements[i].noiseCutoff > Noise(position, activeBiomeElement.noiseScale, activeBiomeElement.noiseSeed) && activeBiome.biomeElements[i].randomCutoff > RandomNum(position, activeBiomeElement.randomSeed)) {
+            if (activeBiome.biomeElements[i].noiseCutoff > Noise(position, activeBiomeElement.noiseScale, activeBiomeElement.noiseSeed) && activeBiome.biomeElements[i].randomCutoff > RandomNum(position, activeBiomeElement.randomSeed)) { // wtf
                 if (activeBiomeElement.layer == Layer.aboveGround) {
                     tile = new Tile(activeBiomeElement.gamObj, tile.ground);
                 } else if (activeBiomeElement.layer == Layer.ground) {
@@ -98,18 +106,27 @@ public class GenerateMap : MonoBehaviour
                     ground = Instantiate(world.GetTile(new Vector2(x, y)).ground.model, new Vector3(x * 2, 0f, y * 2), objectRotation);
 
                     tile.groundObj = ground; // reference to gameobject for tile
+                    // InGameObject component
                     InGameObject groundInGameObject = ground.AddComponent<InGameObject>(); // new InGameObject component on the gameobject
                     groundInGameObject.tile = tile; // reference to tile for gameobject (on component)
                     groundInGameObject.layer = Layer.ground; // record of layer for gameobject (on component)
+                    // No collider
                 }
 
                 if (tile.aboveGround) {
                     aboveGround = Instantiate(world.GetTile(new Vector2(x, y)).aboveGround.model, new Vector3(x * 2, 0f, y * 2), objectRotation);
 
                     tile.aboveGroundObj = aboveGround;
+                    // InGameObject component
                     InGameObject aboveGroundInGameObject = aboveGround.AddComponent<InGameObject>();
                     aboveGroundInGameObject.tile = tile;
                     aboveGroundInGameObject.layer = Layer.aboveGround;
+                    // Collider
+                    BoxCollider aboveGroundCollider = aboveGround.AddComponent<BoxCollider>();
+                    aboveGroundCollider.center = aboveGroundColliderCenter;
+                    aboveGroundCollider.size = aboveGroundColliderSize;
+                    // Physic material
+                    aboveGroundCollider.material = slipperyPhysicMaterial;
                 }
             }
         }

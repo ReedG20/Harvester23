@@ -5,6 +5,13 @@ using UnityEngine.InputSystem;
 
 public class Movement : MonoBehaviour
 {
+    /*
+    Using the movement system:
+    - Don't add colliders to the ground
+    - Put slippery physic material on player and rigidbody (specs in inspector)
+    - (Not sure about this one) put slippery material on obstacles
+    */
+
     private CustomInput input = null;
 
     private Vector2 moveVector = Vector2.zero;

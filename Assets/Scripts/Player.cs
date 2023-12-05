@@ -39,7 +39,6 @@ public class Player {
 
     // Add item to inventory
     public void AddToInventory(Item item, int amount, Vector2Int? position) {
-        Debug.Log("Adding " + amount + " " + item.name + " to inventory");
         if (amount == 0 || item == null) {
             Debug.LogError("Invalid item or amount!");
             return;
@@ -47,8 +46,6 @@ public class Player {
 
         if (position == null) {
             Vector2Int? tempPosition = FindAvailablePosition(item);
-
-            Debug.Log("tempPosition: " + tempPosition);
 
             if (tempPosition == null) { 
                 Debug.Log("No available position");
@@ -67,7 +64,7 @@ public class Player {
         } else if (slot.item == item) {
             slot.amount += amount;
         } else {
-            Debug.LogError("Item at position is not the same as the item we are trying to add!");
+            Debug.Log("Item at position is not the same as the item we are trying to add!");
             // Move it over to the next available position
             return;
         }
