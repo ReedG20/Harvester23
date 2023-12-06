@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 41b7b54af768a1a49b1c1df3bea25f7f, type: 3}
-  m_Name: ground
+  m_Name: tree2
   m_EditorClassIdentifier: 
-  name: ground
+  name: 
   derivedGamObj: {fileID: 0}
-  model: {fileID: 919132149155446097, guid: b4ef573afb02f401c9fb5ff1a47b88a5, type: 3}
+  model: {fileID: 919132149155446097, guid: ef0e248ffd357ba4483deaa42e562fd1, type: 3}
   states: []
   drops:
-  - item: {fileID: 0}
-    amount: 0
+  - item: {fileID: 11400000, guid: 6644bb486029f304e90817a81b9ba7c7, type: 2}
+    amount: 1

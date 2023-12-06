@@ -55,7 +55,7 @@ public class GenerateMap : MonoBehaviour
         float highestValue = 0f;
         int highestIndex = 0;
         for (int i = 0; i < map.biomes.Count; i++) {
-            float value = Noise(position, map.biomeNoiseScale, map.biomes[i].noiseSeed);
+            float value = Noise(position, map.biomeNoiseScale, map.biomes[i].noiseSeed) + map.biomes[i].sizePriority;
             if (value > highestValue) {
                 highestIndex = i;
                 highestValue = value;
@@ -102,7 +102,7 @@ public class GenerateMap : MonoBehaviour
 
                 Tile tile = world.GetTile(new Vector2(x, y));
 
-                if (tile.ground) {
+                if (tile.ground) { // I think I could organize this so that instantiating and assigning everything is in its own function, because the majority of this code is repeated
                     ground = Instantiate(world.GetTile(new Vector2(x, y)).ground.model, new Vector3(x * 2, 0f, y * 2), objectRotation);
 
                     tile.groundObj = ground; // reference to gameobject for tile

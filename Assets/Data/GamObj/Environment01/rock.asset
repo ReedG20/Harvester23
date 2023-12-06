@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 41b7b54af768a1a49b1c1df3bea25f7f, type: 3}
-  m_Name: ground
+  m_Name: rock
   m_EditorClassIdentifier: 
-  name: ground
+  name: 
   derivedGamObj: {fileID: 0}
-  model: {fileID: 919132149155446097, guid: b4ef573afb02f401c9fb5ff1a47b88a5, type: 3}
+  model: {fileID: 919132149155446097, guid: 7cda0b20738b6bc4a9397deb6abda70f, type: 3}
   states: []
   drops:
-  - item: {fileID: 0}
-    amount: 0
+  - item: {fileID: 11400000, guid: 9bb86af5ee880453581361648b854ef6, type: 2}
+    amount: 3
