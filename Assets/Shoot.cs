@@ -7,8 +7,8 @@ public class Shoot : MonoBehaviour
     [SerializeField]
     GameObject projectile;
 
-    float force = 400f;
-    float forceUp = 400f;
+    float force = 500f;
+    float forceUp = 200f;
 
     [SerializeField]
     int playerIndex;
