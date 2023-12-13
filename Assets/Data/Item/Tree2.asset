@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d1530e3478f6fb6429fd53824034b6e0, type: 3}
-  m_Name: TestItem1
+  m_Name: Tree2
   m_EditorClassIdentifier: 
-  name: TestItem1
+  name: Tree2
   itemType: 0
   model: {fileID: 0}
-  icon: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  icon: {fileID: 21300000, guid: 4ab67223cad1be5468ff2d7b7dca090a, type: 3}

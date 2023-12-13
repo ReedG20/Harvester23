@@ -13,8 +13,6 @@ public class Movement : MonoBehaviour
     - (Not sure about this one) put slippery material on obstacles
     */
 
-    private CustomInput input = null;
-
     private Vector2 moveVector = Vector2.zero;
     private Vector3 force = Vector3.zero;
 
@@ -27,6 +25,7 @@ public class Movement : MonoBehaviour
 
     public Vector2 direction = Vector2.zero;
 
+    /*
     private void Awake() {
         input = new CustomInput();
     }
@@ -42,6 +41,7 @@ public class Movement : MonoBehaviour
         input.Player.Movement.performed -= OnMovementPerformed;
         input.Player.Movement.canceled -= OnMovementCancelled;
     }
+    */
 
     private void Start() {
         rb = GetComponent<Rigidbody>();
@@ -57,15 +57,13 @@ public class Movement : MonoBehaviour
         force = Vector3.zero;
     }
 
-    private void OnMovementPerformed(InputAction.CallbackContext value) {
+    public void OnMovementPerformed(InputAction.CallbackContext value) {
         moveVector = value.ReadValue<Vector2>();
 
-        if (Math.Abs(moveVector.x) == 1f || Math.Abs(moveVector.y) == 1f) {
-            direction.Set(moveVector.x, moveVector.y);
-        }
+        direction.Set(moveVector.x, moveVector.y);
     }
 
-    private void OnMovementCancelled(InputAction.CallbackContext value) {
+    public void OnMovementCancelled(InputAction.CallbackContext value) {
         moveVector = Vector2.zero;
     }
 }

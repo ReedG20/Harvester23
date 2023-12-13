@@ -4,6 +4,7 @@ using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+// Put on Player
 public class Playtest : MonoBehaviour
 {
     private CustomInput input = null;

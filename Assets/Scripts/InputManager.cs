@@ -11,7 +11,19 @@ public class InputManager : MonoBehaviour
     GameManager gameManager;
 
     [SerializeField]
-    BreakObject breakObject;
+    Movement movement1;
+    [SerializeField]
+    Movement movement2;
+    
+    [SerializeField]
+    BreakObject breakObject1;
+    [SerializeField]
+    BreakObject breakObject2;
+
+    [SerializeField]
+    Shoot shoot1;
+    [SerializeField]
+    Shoot shoot2;
 
     void Awake() {
         input = new CustomInput();
@@ -19,11 +31,33 @@ public class InputManager : MonoBehaviour
 
     void OnEnable() {
         input.Enable();
-        input.Player.Break.performed += ctx => breakObject.BreakInGameObject(); // E on the keyboard
+
+        input.Player1.Movement.performed += movement1.OnMovementPerformed;
+        input.Player1.Movement.canceled += movement1.OnMovementCancelled;
+
+        input.Player2.Movement.performed += movement2.OnMovementPerformed;
+        input.Player2.Movement.canceled += movement2.OnMovementCancelled;
+
+        input.Player1.Break.performed += ctx => breakObject1.BreakInGameObject(0, movement1);
+        input.Player2.Break.performed += ctx => breakObject2.BreakInGameObject(1, movement2);
+
+        input.Player1.Shoot.performed += ctx => shoot1.ShootProjectile(movement1);
+        input.Player2.Shoot.performed += ctx => shoot2.ShootProjectile(movement2);
     }
 
     void OnDisable() {
         input.Disable();
-        input.Player.Break.performed -= ctx => breakObject.BreakInGameObject();
+
+        input.Player1.Movement.performed -= movement1.OnMovementPerformed;
+        input.Player1.Movement.canceled -= movement1.OnMovementCancelled;
+
+        input.Player2.Movement.performed -= movement2.OnMovementPerformed;
+        input.Player2.Movement.canceled -= movement2.OnMovementCancelled;
+
+        input.Player1.Break.performed -= ctx => breakObject1.BreakInGameObject(0, movement1);
+        input.Player2.Break.performed -= ctx => breakObject2.BreakInGameObject(1, movement2);
+
+        input.Player1.Shoot.performed -= ctx => shoot1.ShootProjectile(movement1);
+        input.Player2.Shoot.performed -= ctx => shoot2.ShootProjectile(movement2);
     }
 }

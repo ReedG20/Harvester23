@@ -2,7 +2,7 @@
     "name": "CustomInput",
     "maps": [
         {
-            "name": "Player",
+            "name": "Player1",
             "id": "ee546296-c5e9-4706-958d-6b88357f083b",
             "actions": [
                 {
@@ -18,6 +18,15 @@
                     "name": "Break",
                     "type": "Button",
                     "id": "b4f3690b-1f9f-4f65-8a66-7258ed1d622d",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Shoot",
+                    "type": "Button",
+                    "id": "fcf8957f-7e6d-449d-8119-2642fc1d454a",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -81,8 +90,65 @@
                     "isPartOfComposite": true
                 },
                 {
-                    "name": "Arrow Keys",
-                    "id": "dd396ce0-deea-4c8d-9f84-568f2858e48c",
+                    "name": "",
+                    "id": "1a0697df-1e6c-470d-895a-52da0a3d2449",
+                    "path": "<Keyboard>/leftShift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Break",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "ced97407-744a-4971-970a-3994b04d4547",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Shoot",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "Player2",
+            "id": "6bb1b039-7199-44ea-b7cf-d504d739749d",
+            "actions": [
+                {
+                    "name": "Movement",
+                    "type": "Value",
+                    "id": "7ce61a24-2b4c-4522-98d0-2d296328164d",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Break",
+                    "type": "Button",
+                    "id": "68a69263-80c6-43a6-91f3-039020241978",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Shoot",
+                    "type": "Button",
+                    "id": "398806e0-4ec0-4ce5-9fb5-9fe97b714b6e",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "WASD",
+                    "id": "8a51ea94-1f8c-4756-8d5d-61611c0cd347",
                     "path": "2DVector",
                     "interactions": "",
                     "processors": "",
@@ -93,7 +159,7 @@
                 },
                 {
                     "name": "up",
-                    "id": "2ea1fd27-770b-482d-b0ea-ee18281d7276",
+                    "id": "f44bf6a0-e4cb-4e77-b379-4890823bb3ed",
                     "path": "<Keyboard>/upArrow",
                     "interactions": "",
                     "processors": "",
@@ -104,7 +170,7 @@
                 },
                 {
                     "name": "down",
-                    "id": "11dbc8b5-72c8-4159-a7eb-4bca661b91e8",
+                    "id": "5d8876ed-ecfe-4d0b-b26f-d9803fcf468a",
                     "path": "<Keyboard>/downArrow",
                     "interactions": "",
                     "processors": "",
@@ -115,7 +181,7 @@
                 },
                 {
                     "name": "left",
-                    "id": "0f429afa-4dec-417b-ad8e-9bb493c5a288",
+                    "id": "ddb5a541-9405-4c1d-b6d0-eac2df187059",
                     "path": "<Keyboard>/leftArrow",
                     "interactions": "",
                     "processors": "",
@@ -126,7 +192,7 @@
                 },
                 {
                     "name": "right",
-                    "id": "cc773388-c494-4f8f-a23d-309b424e775a",
+                    "id": "a62fd032-95cb-481b-8630-672b3b5bc782",
                     "path": "<Keyboard>/rightArrow",
                     "interactions": "",
                     "processors": "",
@@ -137,12 +203,23 @@
                 },
                 {
                     "name": "",
-                    "id": "1a0697df-1e6c-470d-895a-52da0a3d2449",
-                    "path": "<Mouse>/leftButton",
+                    "id": "93f29439-6fe4-4648-93aa-b1f6b8fca3af",
+                    "path": "<Keyboard>/rightShift",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "Break",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "1a2e2968-8bf7-47d2-9c87-ebb7d2f7ef4a",
+                    "path": "<Keyboard>/enter",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Shoot",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

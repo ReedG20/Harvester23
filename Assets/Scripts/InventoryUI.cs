@@ -10,7 +10,7 @@ public class InventoryUI : MonoBehaviour
     // Connects all the SlotUI components with their respective slots
     public void ConnectSlotUIsToInventory (Player player) {
 
-        slotUIs = GetComponentsInChildren<SlotUI>(); // This works, and we end up with 40 SlotUIs
+        slotUIs = GetComponentsInChildren<SlotUI>(); // This works, and we end up with 40 SlotUIs;
 
         // Relying on the fact that Unity retrieves the SlotUIs in the same order as they are in the hierarchy
 

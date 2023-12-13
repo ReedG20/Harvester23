@@ -18,4 +18,4 @@ MonoBehaviour:
   states: []
   drops:
   - item: {fileID: 11400000, guid: 9bb86af5ee880453581361648b854ef6, type: 2}
-    amount: 3
+    amount: 1

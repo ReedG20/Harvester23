@@ -12,7 +12,7 @@ public class Player {
     public Slot[,] inventory;
 
     // Should inventorySize not be here? YES
-    public readonly Vector2Int inventorySize = new Vector2Int(8, 5); // Inventory position bounds (8 x 4 and the 8-slot hotbar)
+    public readonly Vector2Int inventorySize = new Vector2Int(5, 4); // Inventory position bounds (8 x 4 and the 8-slot hotbar)
 
     // Player constructor
     public Player(string name, GameObject playerObject) {
