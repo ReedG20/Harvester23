@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5b3977e60c098f4581adb55b55741d9, type: 3}
   m_Name: Environment01
   m_EditorClassIdentifier: 
-  size: 100
+  size: 20
   useCustomSeed: 0
   customSeed: 0
   biomeNoiseScale: 0.1

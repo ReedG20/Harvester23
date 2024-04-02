@@ -9,6 +9,8 @@ public class GenerateMap : MonoBehaviour
     bool generateMap;
     [SerializeField]
     Map map; // Map stores the instructions on how to create a world
+    [SerializeField]
+    bool GenerateAtCenter = true; // Not currently in use
     World world; // World stores the data created by the map
 
     float bigNum = 12345.12345f; // decimal because of perlin noise bug
