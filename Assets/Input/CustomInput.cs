@@ -169,7 +169,7 @@ public partial class @CustomInput: IInputActionCollection2, IDisposable
             ],
             ""bindings"": [
                 {
-                    ""name"": ""WASD"",
+                    ""name"": ""Arrows"",
                     ""id"": ""8a51ea94-1f8c-4756-8d5d-61611c0cd347"",
                     ""path"": ""2DVector"",
                     ""interactions"": """",

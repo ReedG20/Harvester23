@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: 
   derivedGamObj: {fileID: 0}
-  model: {fileID: 919132149155446097, guid: ef0e248ffd357ba4483deaa42e562fd1, type: 3}
+  model: {fileID: 919132149155446097, guid: bc8f602bad9b94372be4d0ee37cd11bf, type: 3}
   states: []
   drops:
   - item: {fileID: 11400000, guid: 7d1788869542d964cb202b2b8e8ae4e8, type: 2}
