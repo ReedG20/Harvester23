@@ -17,13 +17,15 @@ public class Movement : MonoBehaviour
     private Vector3 force = Vector3.zero;
 
     private Rigidbody rb;
+    [SerializeField]
+    private GameObject graphics;
 
     [SerializeField]
     private float speed = 1f;
     [SerializeField]
     private float acceleration = 1f;
 
-    public Vector2 direction = Vector2.zero;
+    public Vector2 direction = new Vector2(0f, 1f);
 
     /*
     private void Awake() {
@@ -55,6 +57,8 @@ public class Movement : MonoBehaviour
         rb.AddForce(force);
 
         force = Vector3.zero;
+
+        graphics.transform.rotation = Quaternion.LookRotation(new Vector3(direction.x, 0f, direction.y));
     }
 
     public void OnMovementPerformed(InputAction.CallbackContext value) {

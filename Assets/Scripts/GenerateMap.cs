@@ -9,8 +9,8 @@ public class GenerateMap : MonoBehaviour
     bool generateMap;
     [SerializeField]
     Map map; // Map stores the instructions on how to create a world
-    [SerializeField]
-    bool GenerateAtCenter = true; // Not currently in use
+    //[SerializeField]
+    //bool GenerateAtCenter = true; // Not currently in use
     World world; // World stores the data created by the map
 
     float bigNum = 12345.12345f; // decimal because of perlin noise bug
@@ -22,7 +22,13 @@ public class GenerateMap : MonoBehaviour
     [SerializeField]
     PhysicMaterial slipperyPhysicMaterial;
 
-    Quaternion objectRotation = Quaternion.Euler(new Vector3(-90f, 0f, 0f)); // Will remove soon. Wait how
+    Vector3 objectRotation = new Vector3(-90f, 0f, 0f); // Will remove soon. Wait how
+
+    [SerializeField]
+    GamObj water; // Temporary hacky solution
+
+    [SerializeField]
+    GamObj grass;
 
     void Start() {
 
@@ -47,7 +53,7 @@ public class GenerateMap : MonoBehaviour
                 }
             }
 
-            Random.InitState((int)System.DateTime.Now.Ticks); // REMOVE LATER
+            Random.InitState((int)System.DateTime.Now.Ticks); // REMOVE LATER. DOESNT WORK FOR SEED
 
             CreateWorld(world, map.size); // Physically create the world (instantiate the tiles)
         }
@@ -82,6 +88,12 @@ public class GenerateMap : MonoBehaviour
                 }
             }
         }
+
+        // Middle square grass
+        if (position.x < map.size / 2 + 3 && position.x > map.size / 2 - 3 && position.y < map.size / 2 + 3 && position.y > map.size / 2 - 3) {
+            tile = new Tile(null, grass);
+        }
+
         return tile;
     }
 
@@ -105,18 +117,25 @@ public class GenerateMap : MonoBehaviour
                 Tile tile = world.GetTile(new Vector2(x, y));
 
                 if (tile.ground) { // I think I could organize this so that instantiating and assigning everything is in its own function, because the majority of this code is repeated
-                    ground = Instantiate(world.GetTile(new Vector2(x, y)).ground.model, new Vector3(x * 2, 0f, y * 2), objectRotation);
+                    ground = Instantiate(world.GetTile(new Vector2(x, y)).ground.model, new Vector3(x * 2 - size, 0f, y * 2 - size), Quaternion.Euler(new Vector3(objectRotation.x, objectRotation.y + RandomRotation(tile.ground.randomRotation), objectRotation.z))); // Make conditional
 
                     tile.groundObj = ground; // reference to gameobject for tile
                     // InGameObject component
                     InGameObject groundInGameObject = ground.AddComponent<InGameObject>(); // new InGameObject component on the gameobject
                     groundInGameObject.tile = tile; // reference to tile for gameobject (on component)
                     groundInGameObject.layer = Layer.ground; // record of layer for gameobject (on component)
-                    // No collider
+                    // Only collider for water
+                    if (tile.ground == water) {
+                        BoxCollider groundCollider = ground.AddComponent<BoxCollider>();
+                        groundCollider.center = aboveGroundColliderCenter;
+                        groundCollider.size = aboveGroundColliderSize;
+                        // Physic material
+                        groundCollider.material = slipperyPhysicMaterial;
+                    }
                 }
 
                 if (tile.aboveGround) {
-                    aboveGround = Instantiate(world.GetTile(new Vector2(x, y)).aboveGround.model, new Vector3(x * 2, 0f, y * 2), objectRotation);
+                    aboveGround = Instantiate(world.GetTile(new Vector2(x, y)).aboveGround.model, new Vector3(x * 2 - size /*temporary*/, 0f, y * 2 - size), Quaternion.Euler(new Vector3(objectRotation.x, objectRotation.y + RandomRotation(tile.aboveGround.randomRotation), objectRotation.z)));
 
                     tile.aboveGroundObj = aboveGround;
                     // InGameObject component
@@ -124,14 +143,23 @@ public class GenerateMap : MonoBehaviour
                     aboveGroundInGameObject.tile = tile;
                     aboveGroundInGameObject.layer = Layer.aboveGround;
                     // Collider
-                    BoxCollider aboveGroundCollider = aboveGround.AddComponent<BoxCollider>();
-                    aboveGroundCollider.center = aboveGroundColliderCenter;
-                    aboveGroundCollider.size = aboveGroundColliderSize;
-                    // Physic material
-                    aboveGroundCollider.material = slipperyPhysicMaterial;
+                    if (tile.aboveGround.collider) {
+                        BoxCollider aboveGroundCollider = aboveGround.AddComponent<BoxCollider>();
+                        aboveGroundCollider.center = aboveGroundColliderCenter;
+                        aboveGroundCollider.size = aboveGroundColliderSize;
+                        // Physic material
+                        aboveGroundCollider.material = slipperyPhysicMaterial;
+                    }
                 }
             }
         }
+    }
+
+    float RandomRotation(bool randomRotation) {
+        if (!randomRotation) return 0f;
+        int randomIndex = Random.Range(0, 4);
+        float rotation = randomIndex * 90f;
+        return rotation;
     }
 }
 

@@ -12,6 +12,8 @@ public class GamObj : ScriptableObject
     public GameObject model;
     public List<GameObject> states;
     // add ground or above ground
+    public bool collider = true;
+    public bool randomRotation = true;
 
     [Space]
     public List<Drop> drops;

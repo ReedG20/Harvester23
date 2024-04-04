@@ -22,5 +22,6 @@ public class InventoryUI : MonoBehaviour
         }
 
         player.UpdateInventoryUI(); // Not sure if I need this
+        //Debug.Log("Calling UpdateInventoryUI() for the first time");
     }
 }

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Xml.Serialization;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Player {
@@ -10,6 +11,8 @@ public class Player {
     GameObject playerObject;
 
     public Slot[,] inventory;
+
+    public int health = 100;
 
     // Should inventorySize not be here? YES
     public readonly Vector2Int inventorySize = new Vector2Int(5, 4); // Inventory position bounds (8 x 4 and the 8-slot hotbar)
@@ -113,27 +116,52 @@ public class Player {
     }
 
     // Remove the item from the inventory at a position
-    public void RemoveItemFromPosition(Vector2Int position, int amount) {
+    public Item RemoveItemFromPosition(Vector2Int position, int amount) {
         if (amount == 0) {
-            Debug.LogError("Invalid amount!");
-            return;
+            Debug.LogWarning("Invalid amount!");
+            return null;
         }
 
         Slot slot = inventory[position.x, position.y];
 
         if (slot.item == null) {
-            Debug.LogError("No item at position!");
-            return;
+            Debug.LogWarning("No item at position!");
+            return null;
         }
 
         if (amount > slot.amount) {
-            Debug.LogError("Amount is greater than amount in slot!");
-            return;
+            Debug.LogWarning("Amount is greater than amount in slot!");
+            return null;
         }
 
         slot.amount -= amount;
 
+        if (slot.amount == 0) {
+            OrganizeInventory();
+        }
+
         UpdateInventoryUI();
+        return slot.item;
+    }
+
+    // Organize the inventory
+    public void OrganizeInventory() {
+        Slot currentSlot = null;
+        Slot lastSlot = null;
+         for (int y = 0; y < inventorySize.y; y++)
+        {
+            for (int x = 0; x < inventorySize.x; x++)
+            {
+                currentSlot = inventory[x, y];
+                if (lastSlot != null && lastSlot.amount == 0) {
+                    lastSlot.item = currentSlot.item;
+                    lastSlot.amount = currentSlot.amount;
+                    currentSlot.item = null;
+                    currentSlot.amount = 0;
+                }
+                lastSlot = currentSlot;
+            }
+        }
     }
 
     // Get the total amount of a certain item in the inventory
@@ -163,6 +191,10 @@ public class Player {
                 Debug.LogError("Amount is less than zero");
             }
         }
+    }
+
+    public void DamagePlayer(int damage) {
+        health -= damage;
     }
 }
 
