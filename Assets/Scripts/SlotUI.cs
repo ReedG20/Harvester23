@@ -28,20 +28,36 @@ public class SlotUI : MonoBehaviour
     }
 
     public void SetIcon (Sprite icon) {
+        if (image == null) {
+            Debug.LogError("Image is null");
+            return;
+        }
         image.sprite = icon;
         image.enabled = true;
     }
 
     public void DisableIcon () {
+        if (image == null) {
+            Debug.LogError("Image is null");
+            return;
+        }
         image.enabled = false;
         image.sprite = null;
     }
 
     public void SetAmount (int amount) {
+        if (text == null) {
+            Debug.LogError("Text is null");
+            return;
+        }
         text.text = amount.ToString();
     }
 
     public void ClearAmount () {
+        if (text == null) {
+            Debug.LogError("Text is null");
+            return;
+        }
         text.text = "0";
     }
 }

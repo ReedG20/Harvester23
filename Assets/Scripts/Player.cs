@@ -6,7 +6,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 
 public class Player {
-    string name;
+    public string name;
 
     GameObject playerObject;
 
@@ -38,6 +38,7 @@ public class Player {
                 inventory[x, y] = new Slot(null, 0);
             }
         }
+        Debug.Log("Inventory created for " + name);
     }
 
     // Add item to inventory
@@ -178,7 +179,16 @@ public class Player {
     }
 
     public void UpdateInventoryUI() {
+        if (inventory == null) {
+            Debug.LogError("Inventory is null");
+            return;
+        }
         foreach(Slot slot in inventory) {
+            if (slot == null || slot.slotUI==null) {
+                Debug.LogError("SlotUI is null");
+                continue;
+            }
+            
             SlotUI slotUI = slot.slotUI;
 
             if (slot.amount == 0) {

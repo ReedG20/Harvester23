@@ -12,14 +12,24 @@ public class BreakObject : MonoBehaviour
     [SerializeField]
     GameManager gameManager;
 
+    [SerializeField]
+    GamObj water;
+
     public void BreakInGameObject(int playerIndex, Movement movement) {
         Debug.Log("BreakInGameObject called");
+
         Ray ray = new Ray(transform.position, new Vector3(movement.direction.x, 0f, movement.direction.y)); // Raycast should generally be in FixedUpdate, but this should work
 
         RaycastHit hit;
 
         if (Physics.Raycast(ray, out hit, reach)) {
+
             InGameObject inGameObject = hit.collider.gameObject.GetComponent<InGameObject>();
+
+            if (inGameObject.tile.ground == water) {
+                return;
+            }
+
             if (inGameObject == null) {
                 Debug.Log("Hit player");
                 return;

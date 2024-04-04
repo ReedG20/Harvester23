@@ -14,9 +14,22 @@ public class InventoryUI : MonoBehaviour
 
         // Relying on the fact that Unity retrieves the SlotUIs in the same order as they are in the hierarchy
 
+        Debug.Log("SlotUIs length: " + slotUIs.Length + " for player " + player.name);
+
         for (int i = 0; i < slotUIs.Length; i++) {
             Slot slot = player.inventory[i % player.inventorySize.x, (i / player.inventorySize.x)]; // Outside bounds
             SlotUI slotUI = slotUIs[i];
+ 
+            if (slot == null) {
+                Debug.Log("Slot is null");
+                continue;
+            }
+
+            if (slotUI == null) {
+                Debug.Log("SlotUI is null");
+                continue;
+            }
+
             slotUI.SetSlot(slot);
             slot.slotUI = slotUI;
         }
